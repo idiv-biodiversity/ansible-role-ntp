@@ -1,0 +1,64 @@
+---
+
+# -----------------------------------------------------------------------------
+# get rid of chrony
+# -----------------------------------------------------------------------------
+
+- name: check if chrony absent
+  yum:
+    pkg: chrony
+    state: absent
+  check_mode: yes
+  register: ntp_chrony_absent
+
+- name: stop and disable chrony
+  service:
+    name: chronyd
+    enabled: no
+    state: stopped
+  when: ntp_chrony_absent.changed
+
+- name: remove chrony package
+  yum:
+    pkg: chrony
+    state: absent
+  when: ntp_chrony_absent.changed
+
+# -----------------------------------------------------------------------------
+# install ntp
+# -----------------------------------------------------------------------------
+
+- name: install ntp
+  yum:
+    pkg: '{{ ntp_distro_packages | join(",") }}'
+
+- name: configure ntp
+  template:
+    src: '{{ ntp_template_name }}-ntp.conf.j2'
+    dest: /etc/ntp.conf
+    mode: 0644
+    owner: root
+    group: root
+  register: ntp_configuration
+  tags:
+    - ntp-conf
+
+- name: restart ntpd service
+  service:
+    name: ntpd
+    state: restarted
+  when: ntp_configuration.changed
+  tags:
+    - ntp-conf
+
+- name: enable ntpd service and assure it is started
+  service:
+    name: ntpd
+    enabled: yes
+    state: started
+  tags:
+    - ntp-service
+    - service
+    - service-ntp
+
+...

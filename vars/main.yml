@@ -1,0 +1,10 @@
+---
+
+ntp_distro_packages:
+  - ntp
+  - ntpdate
+
+ntp_template_name: >-
+  {{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}
+
+...
