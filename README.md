@@ -11,8 +11,9 @@ Table of Contents
 
 - [Requirements](#requirements)
 - [Role Variables](#role-variables)
+  * [Time Zone](#time-zone)
   * [NTP Servers](#ntp-servers)
-  * [Extra Restriction](#extra-restriction)
+  * [Restrict](#restrict)
 - [Dependencies](#dependencies)
 - [Example Playbook](#example-playbook)
   * [Top-Level Playbook](#top-level-playbook)
@@ -31,6 +32,16 @@ Requirements
 
 Role Variables
 --------------
+
+### Time Zone
+
+Set the system time zone. There is no default. The prefix is `system_` on
+purpose, so this variable can be used across different roles that also set the
+time zone.
+
+```yml
+system_timezone: Europe/Berlin
+```
 
 ### NTP Servers
 
