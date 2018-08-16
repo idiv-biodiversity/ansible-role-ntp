@@ -18,6 +18,7 @@ Table of Contents
 - [Example Playbook](#example-playbook)
   * [Top-Level Playbook](#top-level-playbook)
   * [Role Dependency](#role-dependency)
+- [Tags](#tags)
 - [License](#license)
 - [Author Information](#author-information)
 
@@ -130,6 +131,7 @@ Write a top-level playbook:
     - role: idiv-biodiversity.ntp
       tags:
         - ntp
+        - timesync
 
 ...
 ```
@@ -146,9 +148,27 @@ dependencies:
   - role: idiv-biodiversity.ntp
     tags:
       - ntp
+      - timesync
 
 ...
 ```
+
+
+Tags
+----
+
+With these tags, only specific parts of the role can be triggered:
+
+- `timezone`: just set the time zone
+- `ntp-conf`: configure `/etc/ntp.conf` and restart the service if changed
+- `service`, `service-ntp` and `ntp-service`: enable and start `ntpd`; the
+  purpose of the plain `service` tag is that you can enable and start all
+  services across roles by using this tag, e.g. `ansible-playbook site.yml -t
+  service`
+
+The tags from the [Example Playbook](#example-playbook) are `ntp` and
+`timesync`. In case you switch from different time synchronization roles, the
+`timesync` tag should come in handy, in case these roles also use this tag.
 
 
 License
