@@ -15,20 +15,9 @@
     pkg: chrony
     state: absent
   check_mode: yes
-  register: ntp_chrony_absent
+  notify: remove chrony
 
-- name: stop and disable chrony
-  service:
-    name: chronyd
-    enabled: no
-    state: stopped
-  when: ntp_chrony_absent.changed
-
-- name: remove chrony package
-  yum:
-    pkg: chrony
-    state: absent
-  when: ntp_chrony_absent.changed
+- meta: flush_handlers
 
 # -----------------------------------------------------------------------------
 # install ntp
@@ -45,15 +34,7 @@
     mode: 0644
     owner: root
     group: root
-  register: ntp_configuration
-  tags:
-    - ntp-conf
-
-- name: restart ntpd service
-  service:
-    name: ntpd
-    state: restarted
-  when: ntp_configuration.changed
+  notify: restart ntpd
   tags:
     - ntp-conf
 
