@@ -1,0 +1,21 @@
+---
+
+- name: restart ntpd
+  service:
+    name: ntpd
+    state: restarted
+
+- name: stop and disable chrony
+  service:
+    name: chronyd
+    enabled: no
+    state: stopped
+  listen: remove chrony
+
+- name: remove chrony package
+  yum:
+    pkg: chrony
+    state: absent
+  listen: remove chrony
+
+...
