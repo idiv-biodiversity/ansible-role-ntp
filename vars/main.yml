@@ -4,7 +4,17 @@ ntp_distro_packages:
   - ntp
   - ntpdate
 
-ntp_template_name: >-
+__ntp_os_distro: >-
   {{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}
+
+__ntp_os_family: >-
+  {{ ansible_os_family | lower }}-{{ ansible_distribution_major_version }}
+
+__ntp_conf_templates:
+  files:
+    - '{{ __ntp_os_family }}-ntp.conf.j2'
+    - '{{ __ntp_os_distro }}-ntp.conf.j2'
+  paths:
+    - templates
 
 ...
