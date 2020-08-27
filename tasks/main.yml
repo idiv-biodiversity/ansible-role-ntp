@@ -25,7 +25,7 @@
 
 - name: configure ntp
   template:
-    src: '{{ ntp_template_name }}-ntp.conf.j2'
+    src: '{{ lookup("first_found", __ntp_conf_templates) }}'
     dest: /etc/ntp.conf
     mode: 0644
     owner: root
