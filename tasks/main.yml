@@ -34,7 +34,7 @@
     mode: 0644
     owner: root
     group: root
-  notify: restart ntpd
+  register: __ntp_configuration
   tags:
     - ntp-conf
 
@@ -42,8 +42,14 @@
   service:
     name: ntpd
     enabled: yes
-    state: started
+    state: >-
+      {{
+        __ntp_configuration.changed |
+          default(False) |
+          ternary("restarted", "started")
+      }}
   tags:
+    - ntp-conf
     - ntp-service
     - service
     - service-ntp
