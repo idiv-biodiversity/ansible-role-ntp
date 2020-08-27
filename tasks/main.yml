@@ -10,14 +10,10 @@
 # get rid of chrony
 # -----------------------------------------------------------------------------
 
-- name: check if chrony absent
+- name: remove chrony
   yum:
     pkg: chrony
     state: absent
-  check_mode: yes
-  notify: remove chrony
-
-- meta: flush_handlers
 
 # -----------------------------------------------------------------------------
 # install ntp
