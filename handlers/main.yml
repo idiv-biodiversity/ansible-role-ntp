@@ -1,10 +1,5 @@
 ---
 
-- name: restart ntpd
-  service:
-    name: ntpd
-    state: restarted
-
 - name: stop and disable chrony
   service:
     name: chronyd
