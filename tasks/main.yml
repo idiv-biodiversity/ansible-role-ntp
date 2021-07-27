@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------
 
 - name: remove chrony
-  yum:
+  package:
     pkg: chrony
     state: absent
 
@@ -20,7 +20,7 @@
 # -----------------------------------------------------------------------------
 
 - name: install ntp
-  yum:
+  package:
     pkg: '{{ ntp_distro_packages | join(",") }}'
 
 - name: stat distro ntp.conf
