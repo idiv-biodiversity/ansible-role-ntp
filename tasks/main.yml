@@ -1,5 +1,8 @@
 ---
 
+- when: "ansible_os_family == 'Debian'"
+  import_vars: '{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version }}.yml'
+
 - name: set time zone
   timezone:
     name: '{{ system_timezone }}'
@@ -43,7 +46,7 @@
 
 - name: enable ntpd service and assure it is started
   service:
-    name: ntpd
+    name: '{{ ntp_service_name }}'
     enabled: yes
     state: >-
       {{

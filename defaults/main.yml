@@ -1,0 +1,5 @@
+---
+
+ntp_service_name: ntpd
+
+...
