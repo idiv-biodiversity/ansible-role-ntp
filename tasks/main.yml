@@ -1,7 +1,7 @@
 ---
 
 - name: set time zone
-  timezone:
+  community.general.timezone:
     name: '{{ system_timezone }}'
   tags:
     - timezone
@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------
 
 - name: remove chrony
-  package:
+  ansible.builtin.package:
     pkg: chrony
     state: absent
 
@@ -20,18 +20,18 @@
 # -----------------------------------------------------------------------------
 
 - name: install ntp
-  package:
+  ansible.builtin.package:
     pkg: '{{ ntp_distro_packages | join(",") }}'
 
 - name: stat distro ntp.conf
-  stat:
+  ansible.builtin.stat:
     path: /etc/ntp.conf
   register: __ntp_conf_dest
   tags:
     - ntp-conf
 
 - name: configure ntp
-  template:
+  ansible.builtin.template:
     src: '{{ lookup("first_found", __ntp_conf_templates) }}'
     dest: /etc/ntp.conf
     owner: '{{ __ntp_conf_dest.stat.pw_name }}'
@@ -42,7 +42,7 @@
     - ntp-conf
 
 - name: enable ntpd service and assure it is started
-  service:
+  ansible.builtin.service:
     name: ntpd
     enabled: yes
     state: >-
